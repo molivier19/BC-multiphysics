@@ -1,0 +1,39 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+singleGraph
+{
+    start   (-0.00001 0.00001 0.025);
+    end     (-0.00001 0.99999 0.025);
+    fields  (wallHeatFluxKappa);
+
+    // #includeEtc "caseDicts/postProcessing/graphs/sampleDict.cfg"
+
+    interpolationScheme cellPoint;
+    setFormat   raw;
+    setConfig
+    {
+        type    midPoint;  //uniform, midPoint, midPointAndFace
+        axis    y;  // x, y, z, xyz, distance
+        //nPoints 100;
+    }
+
+    // Must be last entry
+    #includeEtc "caseDicts/postProcessing/graphs/graph.cfg"
+}
+
+// ************************************************************************* //

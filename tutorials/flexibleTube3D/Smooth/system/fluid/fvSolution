@@ -1,0 +1,98 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/fluid";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p
+    {
+        solver          PCG;
+        preconditioner  DIC;
+
+        minIter         0;
+        maxIter         500;
+        tolerance       1e-10;
+        relTol          0.01;
+    };
+    
+    U
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+
+        minIter         0;
+        maxIter         500;
+        tolerance       1e-8;
+        relTol          0.1;
+    };
+    
+    cellDisplacement
+    {
+        solver          PCG;
+        preconditioner  DIC;
+
+        minIter         0;
+        maxIter         500;
+        tolerance       1e-10;
+        relTol          0.001;
+    };
+}
+
+
+fsi
+{
+    noStabOnFirstIteration true;
+
+    // Optional entry. Default value is INT_MAX (i.e. no update)
+    //stabUpdateInterval 10;
+
+    fsiBoundaries
+    {
+        INTERFACE_FLUID
+        {
+            relaxFactor 0.6;
+        }
+    }
+}
+
+
+solverControls
+{
+    nCorrectors     1;
+    nPISOCorrectors 2;
+    U               1e-6;
+    relU            1e-4;
+    UOuter          1e-5;
+    p               1e-6;
+    relp            1e-4;
+    pOuter          1e-4;
+
+    nNonOrthogonalCorrectors 1;
+//    pRefCell        0;
+//    pRefValue       0;
+
+    transferViscousStress true;
+}
+
+/*relaxationFactors
+{
+    U                0.7;
+    p                0.3;
+}*/
+
+
+
+// ************************************************************************* //

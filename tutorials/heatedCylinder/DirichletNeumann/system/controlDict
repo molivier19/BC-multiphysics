@@ -1,0 +1,167 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "../system/include/CaseControl";
+#include "../constant/include/CaseSetupValue";
+
+
+DebugSwitches
+{
+    pseudotimeControl                   0;
+    solidElasticThermalPhysicsSolver    1;
+    solidThermalStVKPhysicsSolver       1;
+    compressible::fstiTemperature       1;
+    compressible::fstiHeatFlux          1;
+    fsiInterfaceTraction                0;
+    fsiInterfaceDisplacement            0;
+}
+
+application     multiFieldSolver;
+
+startFrom       latestTime;
+
+stopAt          endTime;
+
+writeControl    runTime;
+
+writeInterval   $writeTime;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  10;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   10;
+
+runTimeModifiable true;
+
+adjustTimeStep  no;
+
+maxDeltaT       $writeTime;
+
+// Dynamic refinement control
+Rf              #calc "1.0/($Gamma*$Tf)*pow(($U/$Ma),2.0)";
+rho1            #calc "$P/($Rf*$Tf)";
+rho2            #calc "$rho1*(($Gamma+1.0)*pow($Ma,2.0))/(($Gamma-1.0)*pow($Ma,2.0)+2.0)";
+
+// Dynamic refinement control END
+
+libs
+(
+    "libdecompositionMethods.so"
+    "libptscotchDecomp.so"
+);
+
+functions
+{
+    MachNo
+    {
+        type    MachNo;
+        libs    (fieldFunctionObjects);
+
+        region         fluid;
+        executeControl    runTime;
+        executeInterval    $writeTime;
+        writeControl    runTime;
+        writeInterval    $writeTime;
+    }
+
+    wallHeatFlux
+    {
+        type            wallHeatFluxKappa;
+        libs            (libnewFunctionObjects);
+        region          fluid;
+        patches         (InterfaceFluid);
+        executeControl  runTime;
+        executeInterval $writeTime;
+        writeControl    runTime;
+        writeInterval   $writeTime;
+    }
+
+    wallShearStress
+    {
+        type            wallShearStress;
+        libs            (libfieldFunctionObjects);
+        region          fluid;
+        patches         (InterfaceFluid);
+        executeControl  runTime;
+        executeInterval $writeTime;
+        writeControl    runTime;
+        writeInterval   $writeTime;
+    }
+
+    yPlus
+    {
+        type            yPlus;
+        libs            (fieldFunctionObjects);
+        region          fluid;
+        executeControl  runTime;
+        executeInterval $writeTime;
+        writeControl    runTime;
+        writeInterval   $writeTime;
+    }
+
+    gradRho
+    {
+        type            grad;
+        libs            (fieldFunctionObjects);
+        region          fluid;
+        field           rho;
+        result          gradRho;
+        executeControl  timeStep;
+        executeInterval 1;
+        writeControl    runTime;
+        writeInterval   $writeInterval;
+    }
+
+    magGradRho
+    {
+        type            mag;
+        libs            (fieldFunctionObjects);
+        region          fluid;
+        field           gradRho;
+        result          magGradRho;
+        executeControl  timeStep;
+        executeInterval 1;
+        writeControl    runTime;
+        writeInterval   $writeInterval;
+    }
+
+    magGradRhoNorm
+    {
+        type            pow;
+        libs            (fieldFunctionObjects);
+        region          fluid;
+        field           magGradRho;
+        checkDimensions false;
+        n               1;
+        offset          0;
+        scale           #calc "$lambda/($rho2-$rho1)";
+        result          magGradRhoNorm;
+        executeControl  timeStep;
+        executeInterval 1;
+        writeControl    runTime;
+        writeInterval   $writeInterval;
+    }
+}
+
+// ************************************************************************* //

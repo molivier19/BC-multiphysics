@@ -1,0 +1,117 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2012                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/fluid";
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "../../constant/include/CaseSetupValue";
+
+vertices
+(
+    ($inletX 0  0)
+    ( 0      0  0)
+    ( 0      $h 0)
+    ($inletX $h 0)
+    ( 0      $H 0)
+    ($inletX $H 0)
+    ($width  0  0)
+    ($width  $h 0)
+    ($width  $H 0)
+    ($length 0  0)
+    ($length $h 0)
+    ($length $H 0)
+
+    ($inletX 0  $depth)
+    ( 0      0  $depth)
+    ( 0      $h $depth)
+    ($inletX $h $depth)
+    ( 0      $H $depth)
+    ($inletX $H $depth)
+    ($width  0  $depth)
+    ($width  $h $depth)
+    ($width  $H $depth)
+    ($length 0  $depth)
+    ($length $h $depth)
+    ($length $H $depth)
+);
+
+blocks
+(
+    hex (0 1 2 3 12 13 14 15) (60 40 1) simpleGrading (1 1 1)
+    hex (3 2 4 5 15 14 16 17) (60 80 1) simpleGrading (1 1 1)
+    hex (2 7 8 4 14 19 20 16) (4 80 1) simpleGrading (1 1 1)
+    hex (6 9 10 7 18 21 22 19) (200 40 1) simpleGrading (1 1 1)
+    hex (7 10 11 8 19 22 23 20) (200 80 1) simpleGrading (1 1 1)
+);
+
+edges
+(
+);
+
+boundary
+(
+    Inlet
+    {
+        type patch;
+        faces
+        (
+            (0 12 15 3)
+            (3 15 17 5)
+        );
+    }
+    Outlet
+    {
+        type patch;
+        faces
+        (
+            (9 10 22 21)
+            (10 11 23 22)
+        );
+    }
+    Bottom
+    {
+        type symmetryPlane;
+        faces
+        (
+            (0 1 13 12)
+            (6 9 21 18)
+        );
+    }
+    Top
+    {
+        type symmetryPlane;
+        faces
+        (
+            (4 5 17 16)
+            (8 4 16 20)
+            (11 8 20 23)
+        );
+    }
+    InterfaceFluid
+    {
+        type wall;
+        faces
+        (
+            (1 2 14 13)
+            (2 7 19 14)
+    (6 7 19 18)
+);
+    }
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************ //

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+./Allrun-lib
+./Allrun-mesh
+./Allrun-sim
+./Allrun-post
+

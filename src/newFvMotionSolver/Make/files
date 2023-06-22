@@ -1,0 +1,6 @@
+newLaplacian/newDisplacementLaplacianFvMotionSolver.C
+newSBRStress/newDisplacementSBRStressFvMotionSolver.C
+
+fsiInterfaceDisplacement/fsiInterfaceDisplacementPointPatchVectorField.C
+
+LIB = $(FOAM_USER_LIBBIN)/libnewFvMotionSolver

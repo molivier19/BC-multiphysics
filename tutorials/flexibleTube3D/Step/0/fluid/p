@@ -1,0 +1,52 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/fluid";
+    object      p;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -2 0 0 0 0];
+
+
+internalField   uniform 0;
+
+boundaryField
+{
+    INLET
+    {
+        type            pulseTotalPressure;
+        U               U;
+        phi             phi;
+        rho             none;
+        psi             none;
+        gamma           1;
+        time            0.003;
+        pPulse          uniform 1.3332;
+        p0              uniform 0;
+        value           uniform 1.3332;
+    }
+    INTERFACE_FLUID
+    {
+        type            fsiInterfacePressure;
+        deltaP          1e-06;
+        value           uniform 0;
+    }
+    OUTLET
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+}
+
+
+// ************************************************************************* //

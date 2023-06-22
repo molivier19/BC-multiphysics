@@ -1,0 +1,8 @@
+#!/bin/sh
+
+cd ./src
+./Allwmake
+
+cd ../applications
+wmake -all -j
+

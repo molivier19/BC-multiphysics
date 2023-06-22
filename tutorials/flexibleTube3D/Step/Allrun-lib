@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd Add-On/pulseTotalPressure/
+wmake -j &> ../../log.compileBC
+cd ../../

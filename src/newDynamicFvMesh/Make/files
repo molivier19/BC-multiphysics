@@ -1,0 +1,11 @@
+interfaceDynamicMotionSolverFvMesh/interfaceDynamicMotionSolverFvMesh.C
+
+dynamicRefine2DMotionSolverFvMesh/dynamicRefine2DMotionSolverFvMesh.C
+dynamicRefine3DMotionSolverFvMesh/dynamicRefine3DMotionSolverFvMesh.C
+
+dynamicRefine2DFvMesh/dynamicRefine2DFvMesh.C
+
+hexRef2D/hexRef2D.C
+hexRef2D/hexRef2DData.C
+
+LIB = $(FOAM_USER_LIBBIN)/libnewDynamicFvMesh

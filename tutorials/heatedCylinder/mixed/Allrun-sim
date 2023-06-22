@@ -1,0 +1,16 @@
+#!/bin/sh
+
+cd ${0%/*} || exit 1
+
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+application=`getApplication`
+
+processor=`getNumberOfProcessors`
+
+runApplication -s fluid decomposePar -region fluid
+
+runApplication -s solid decomposePar -region solid
+
+#Run parallel
+runParallel $application

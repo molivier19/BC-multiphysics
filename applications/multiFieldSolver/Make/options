@@ -1,0 +1,21 @@
+EXE_INC = \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude \
+    -I$(WM_BCMP_SRC)/newOpenFOAM/lnInclude \
+    -I$(WM_BCMP_SRC)/physicsSolvers/lnInclude
+
+
+EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) \
+    -lfiniteVolume \
+    -ldynamicFvMesh \
+    -lincompressibleTurbulenceModels \
+    -lincompressibleTransportModels \
+    -lfileFormats \
+    -lmeshTools \
+    -lnewOpenFOAM \
+    -lnewFiniteVolume \
+    -lphysicsSolvers \
+    -lnewFvMotionSolver \
+    -lnewDynamicFvMesh
+

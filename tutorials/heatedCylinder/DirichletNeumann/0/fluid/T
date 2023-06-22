@@ -1,0 +1,68 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+#include "../../constant/include/CaseSetupValue";
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform $Tf;
+
+boundaryField
+{
+    Inlet 
+    {
+        type        characteristicVelocityInletOutletTemperature;
+        U           ( $U 0.0 0.0 );
+        p           $P;
+        T           $Tf;
+        value       $internalField;
+    }
+
+    "Outlet|Top|Bottom" 
+    {
+        type        characteristicPressureInletOutletTemperature;
+        U           ( $U 0.0 0.0 );
+        p           $P;
+        T           $Tf;
+        value       $internalField;
+    }
+
+    InterfaceFluid
+    {
+        type            compressible::fstiTemperature;
+        value           uniform $Tf;
+        Tnbr            T;
+        kappaMethod     fluidThermo;
+        solidRegion     solid;
+        solidPatch      InterfaceSolid;
+        radialExtrapolation
+        {
+            method "radialExtrapolationNNI";
+            pointSelectionDict
+            {
+                method pointSelectionNearestPoint;
+            }
+        }
+    }
+
+    FrontBack
+    {
+        type            empty;
+    }
+}
+
+// ************************************************************************* //

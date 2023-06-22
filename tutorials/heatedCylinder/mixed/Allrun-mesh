@@ -1,0 +1,17 @@
+#!/bin/sh
+
+cd ${0%/*} || exit 1
+
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+dirName="${PWD##*/}"
+
+application=`getApplication`
+
+runApplication -s fluid blockMesh -region fluid
+runApplication -s fluid transformPoints -region fluid -scale 0.0762
+
+runApplication -s solid blockMesh -region solid
+runApplication -s solid transformPoints -region solid -scale 0.0762
+
+touch ${dirName}_${application}.foam

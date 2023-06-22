@@ -1,0 +1,41 @@
+// Fluid Bondary condition properties
+T       300.0;
+U       1736.11; // Ma 5
+P       101.3e3;
+
+// Solid Bondary condition properties
+
+// Fluid Propreties
+M       28.96;
+Cpf     1005;
+mu      2.135e-5; // Re 1e6
+Pr      0.72;
+
+I       0.01;
+mixL    1e-5;
+
+// Solid Propreties
+nu              0.3;
+E               67.32e9; // Equivalent rigidity
+alpha           3.48e-6;
+ks              13.4;
+Cps             468;
+rhos            2692.8; // Equivalent density
+
+// topo base mesh
+width   0.1;
+length  5;
+inletX -1.5;
+depth    0.05;
+H     3;
+h     1;
+// topo box 0
+X01     -0.075;
+X02     0.175;
+Y01     0;
+Y02     1.075;
+// topo box 1
+X21     -0.025;
+X22     0.125;
+Y21     0;
+Y22     1.025;

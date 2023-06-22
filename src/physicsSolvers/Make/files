@@ -1,0 +1,19 @@
+physicsSolver/physicsSolver.C
+physicsSolver/newPhysicsSolver.C
+
+/* Fluid Solver */
+fluidPhysicsSolver/fluidPhysicsSolver.C
+
+/* Compressible and incompressible turb. models not compatible...*/
+rhoCentralDyMFluidPhysicsSolver/rhoCentralDyMFluidPhysicsSolver.C
+
+/* HiSA compressible flow solver.*/
+HiSAPhysicsSolver/HiSAPhysicsSolver.C
+HiSAPhysicsSolver/pseudotimeControl/pseudotimeControl.C
+
+/* Solid Solvers */
+solidElasticThermalPhysicsSolver/solidElasticThermalPhysicsSolver.C
+solidStVKPhysicsSolver/solidStVKPhysicsSolver.C
+solidThermalStVKPhysicsSolver/solidThermalStVKPhysicsSolver.C
+
+LIB = $(FOAM_USER_LIBBIN)/libphysicsSolvers

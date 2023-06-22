@@ -1,0 +1,61 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    location    "0/solid";
+    object      D;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 0 0 0 0 0];
+
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    INLET_SOLID
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+    OUTER_SOLID
+    {
+        type            tractionDisplacement;
+        traction        uniform ( 0 0 0 );
+        pressure        uniform 0;
+        value           uniform (0 0 0);
+    }
+    INTERFACE_SOLID
+    {
+        type            fsiInterfaceTraction;
+        traction        uniform ( 0 0 0 );
+        pressure        uniform 0;
+        fluidRegion     fluid;
+        fluidPatch      INTERFACE_FLUID;
+        radialExtrapolation
+        {
+            method          "radialExtrapolationNNI";
+            pointSelectionDict
+            {
+            }
+        }
+        value           uniform (0 0 0);
+    }
+    OUTLET_SOLID
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+}
+
+
+// ************************************************************************* //

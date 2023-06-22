@@ -1,0 +1,9 @@
+#!/bin/sh
+
+cd ${0%/*} || exit 1
+
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+runParallel -s "sample_fluid" postProcess -func sample_fluid -region fluid -parallel
+runParallel -s "sample_solid" postProcess -func sample_solid -region solid -parallel
+

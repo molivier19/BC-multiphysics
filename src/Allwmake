@@ -1,0 +1,12 @@
+#!/bin/sh
+
+option=-j
+
+# wmake $option libso feBeam
+wmake $option libso newOpenFOAM
+wmake $option libso newFiniteVolume
+wmake $option libso newFvMotionSolver
+wmake $option libso newDynamicFvMesh
+wmake $option libso newFunctionObjects
+wmake $option libso physicsSolvers
+

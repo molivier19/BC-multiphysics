@@ -1,0 +1,6 @@
+#!/bin/bash
+
+join \
+    postProcessing/fluid/InletFlowRate/0/surfaceFieldValue.dat \
+    postProcessing/fluid/OutletFlowRate/0/surfaceFieldValue.dat \
+    | grep -v '#' > InletOutletFlowRate.dat

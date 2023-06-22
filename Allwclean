@@ -1,0 +1,5 @@
+#!/bin/sh
+
+wclean all src
+wclean all applications
+

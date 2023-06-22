@@ -1,0 +1,8 @@
+tractionDisplacement/tractionDisplacementFvPatchVectorField.C
+fsiInterfaceTraction/fsiInterfaceTractionFvPatchVectorField.C
+fsiInterfacePressure/fsiInterfacePressureFvPatchScalarField.C
+
+fstiHeatFlux/fstiHeatFluxFvPatchScalarField.C
+fstiTemperature/fstiTemperatureFvPatchScalarField.C
+
+LIB = $(FOAM_USER_LIBBIN)/libnewFiniteVolume

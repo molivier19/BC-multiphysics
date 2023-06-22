@@ -1,0 +1,82 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/solid";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    D
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        minIter         0;
+        maxIter         200;
+        tolerance       1e-8;
+        relTol          0.1;
+    };
+    T
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        minIter         0;
+        maxIter         200;
+        tolerance       1e-14;
+        relTol          0.1;
+    };
+//    D
+//      {
+//        solver GAMG;
+//              tolerance 1e-8;
+//              relTol 0.8;
+
+//              minIter 0;
+//              maxIter 500;
+
+//              smoother GaussSeidel;
+//              nPreSweeps 0;
+//              nPostSweeps 2;
+//              nFinestSweeps 2;
+
+//              scaleCorrection true;
+//              directSolveCoarsest false;
+
+
+//              cacheAgglomeration true;
+//              nCellsInCoarsestLevel 20;
+//              agglomerator faceAreaPair;
+//              mergeLevels 1;
+//      };
+}
+
+solverControls
+{
+    thermalCoupling     yes;
+    nCorrectors         10;
+    D                   1e-6;
+    relD                0;
+    DOuter              1e-6;
+    outerRelaxFactorD   1;
+    T                   1e-6;
+    relT                0;
+    TOuter              1e-6;
+}
+
+relaxationFactors
+{
+    D   1;
+    T   1;
+}
+
+// ************************************************************************* //

@@ -1,0 +1,73 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/fluid";
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Convective flux (AUSMPlusUp, HLLC)
+fluxScheme          AUSMPlusUp;
+lowMachAusm         false;
+
+ddtSchemes
+{
+    // Dynamic refinement requires Euler scheme
+    default         dualTime rPseudoDeltaT Euler;
+    // default         dualTime rPseudoDeltaT backward;
+}
+
+gradSchemes
+{
+    default          cellLimited faceLeastSquares linear 0.6;
+    gradTVD          faceLeastSquares linear;
+    grad(nuTilda)    cellLimited Gauss linear 0.9;
+    grad(k)          cellLimited Gauss linear 0.9;
+    grad(omega)      cellLimited Gauss linear 0.9;
+}
+
+divSchemes
+{
+    //default         Gauss linear corrected;
+    default          none;
+    div(tauMC)       Gauss linear;
+    div(phi,nuTilda) bounded Gauss upwind phi;
+    div(phi,k)       bounded Gauss upwind phi;
+    div(phi,omega)   bounded Gauss upwind phi;
+}
+
+laplacianSchemes
+{
+    default                 Gauss linear corrected;
+    laplacian(muEff,U)      Gauss linear compact;
+    laplacian(alphaEff,e)   Gauss linear compact;
+}
+
+interpolationSchemes
+{
+    default             linear;
+    reconstruct(rho)    wVanLeer gradTVD;
+    reconstruct(U)      wVanLeer gradTVD;
+    reconstruct(T)      wVanLeer gradTVD;
+}
+
+snGradSchemes
+{
+    //default limited 0.3;
+    default          corrected;
+}
+
+wallDist
+{
+    method Poisson;
+}
+// ************************************************************************* //

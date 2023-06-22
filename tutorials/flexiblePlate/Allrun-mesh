@@ -1,0 +1,36 @@
+#!/bin/sh
+
+cd ${0%/*} || exit 1
+
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+dirName="${PWD##*/}"
+
+application=`getApplication`
+
+refineMeshByCellSet()
+{
+   i=0
+   until [ $i -gt $2 ]
+   do
+      if [ ! -e log.refineMesh.$i ]
+      then
+          echo "creating cell set for primary zone - $i in region - $1"
+          topoSet -region $1 -dict system/topoSetDict.$i > log.topoSet.$1.$i 2>&1
+
+          echo "refining primary zone - $i in region - $1"
+      refineMesh -region $1 -dict system/refineMeshDict -overwrite > log.refineMesh.$1.$i 2>&1
+      fi
+      i=`expr $i + 1`
+   done
+}
+
+runApplication -s fluid blockMesh -region fluid
+runApplication -s fluid tranformPoints -region fluid -scale 0.1
+refineMeshByCellSet fluid 1
+
+runApplication -s solid blockMesh -region solid
+runApplication -s solid tranformPoints -region solid -scale 0.1
+refineMeshByCellSet solid 1
+
+touch ${dirName}_${application}.foam

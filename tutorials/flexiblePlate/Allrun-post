@@ -1,0 +1,12 @@
+#!/bin/sh
+
+cd ${0%/*} || exit 1
+
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+processor=`getNumberOfProcessors`
+
+runParallel -s "grad" postProcess -func 'grad(T)' -region solid
+runParallel -s "singleGraph" postProcess -func singleGraph -region solid
+runParallel -s "sample" postProcess -func sample -region fluid
+

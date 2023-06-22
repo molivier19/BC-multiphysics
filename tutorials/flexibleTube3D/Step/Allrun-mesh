@@ -1,0 +1,30 @@
+#!/bin/bash
+
+cd ${0%/*} || exit 1
+
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+dirName="${PWD##*/}"
+application=`getApplication`
+
+rm -rf constant/fluid/polyMesh
+rm -rf constant/solid/polyMesh
+
+gmsh -3 -format msh2 Add-On/meshes/flexibleTubeFluid.geo &> log.gmsh.fluid
+gmsh -3 -format msh2 Add-On/meshes/flexibleTubeSolid.geo &> log.gmsh.solid
+
+### PATCH ###
+# echo "\$End" >> meshes/flexibleTubeFluid.msh
+# echo "\$End" >> meshes/flexibleTubeSolid.msh
+#############
+
+runApplication -s fluid gmshToFoam -region fluid Add-On/meshes/flexibleTubeFluid.msh
+runApplication -s solid gmshToFoam -region solid Add-On/meshes/flexibleTubeSolid.msh
+
+rm Add-On/meshes/flexibleTubeFluid.msh
+rm Add-On/meshes/flexibleTubeSolid.msh
+
+runApplication -s fluid renumberMesh -overwrite -region fluid
+runApplication -s solid renumberMesh -overwrite -region solid
+
+touch ${dirName}_${application}.foam

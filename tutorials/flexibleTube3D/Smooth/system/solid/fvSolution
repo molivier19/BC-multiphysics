@@ -1,0 +1,90 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/solid";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    D
+    {
+        solver          PCG;
+        preconditioner  DIC;
+
+        minIter         0;
+        maxIter         500;
+        tolerance       1e-10;
+        relTol          0.01;
+
+
+//        solver GAMG;
+//        tolerance 1e-7;
+//        relTol 0.9;
+//        minIter 0;
+//        maxIter 500;
+
+//        smoother GaussSeidel;
+//        nPreSweeps 0;
+//        nPostSweeps 2;
+//        nFinestSweeps 2;
+
+//        scaleCorrection true;
+//        directSolveCoarsest false;
+
+
+//        cacheAgglomeration true;
+//        nCellsInCoarsestLevel 20;
+//        agglomerator faceAreaPair;
+//        mergeLevels 1;
+    };
+
+}
+
+solverControls
+{
+    nCorrectors     10000;
+    D               1e-7;
+    relD            0.0001;
+    DOuter          5e-7;
+    outerRelaxFactorD 1;
+    explicitFirstOuterIteration false;
+}
+
+relaxationFactors
+{
+    D                1;
+}
+
+//volToPointInterpolation
+// {
+//     radialExtrapolation
+//     {
+//         method  "radialExtrapolationRBF";
+//         RBFparameters
+//         {
+//             radius  0.005;
+//             xTerm   false;//true;
+//             yTerm   false;//true;
+//             zTerm   false;//true;
+//         }
+//         pointSelectionMethod    pointSelectionNearestGroup;
+//         pointSelectionDict
+//         {
+//             nClosestPointsUsed  16;
+//             matchTolerance      1e-12;
+//         }
+//     }
+// }
+
+// ************************************************************************* //

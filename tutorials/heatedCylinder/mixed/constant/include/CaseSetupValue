@@ -1,0 +1,68 @@
+// Fluid Boundary conditions properties
+Tf  241.5; // K
+U   2034.76; // m/s
+P   648.107; // Pa
+
+// Solid Boundary conditions properties
+Ts  241.5; // K
+
+// Fluid Propreties
+Cpf 1005;
+M   28.965;
+mu  6.58e-5;
+Pr  0.72;
+
+I       0.01;
+mixL    1e-5;
+
+// Solid Propreties
+nu      0.27;
+E       193e9;
+alpha   3.48e-6;
+ks      13.4;
+Cps     468;
+rhos    8238;    
+
+// Domain size
+xMin    -5;
+xMax    7;
+yMin    -5;
+yMax    5;
+zMin    0.1;
+zMax    -0.1;
+
+r       0.5;
+nr      -0.5;
+ra      0.3535533906;
+nra     -0.3535533906;
+//r2      1;
+//nr2     -1;
+//r2a     0.7071067812;
+//nr2a    -0.7071067812;
+r2      3;
+nr2     -3;
+r2a     2.121320344;
+nr2a    -2.121320344;
+r3      0.33333333333;
+nr3     -0.33333333333;
+r3a     0.2357022603;
+nr3a    -0.2357022603;
+
+// Mesh size
+cellst  80;
+cellsr  120;
+ratior  5;
+ratiora 400;
+Npa    0.3;
+Ppa    0.025;
+
+cellsr2 60;
+ratior2 0.9;
+ratior2a 0.005;
+Npa2    0.35;        
+Ppa2    0.8;
+
+cellsXMin  40;
+cellsXMax  65;
+cellsYMin  40;
+cellsYMax  40;

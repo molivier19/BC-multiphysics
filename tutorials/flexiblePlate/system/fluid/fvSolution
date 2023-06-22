@@ -1,0 +1,124 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/fluid";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "../../system/include/CaseControl";
+
+solvers
+{
+    cellDisplacement
+    {
+        solver PCG;
+        preconditioner  DIC;
+
+        minIter         0;
+        maxIter         500;
+        tolerance       1e-12;
+        relTol          0.001;
+    };
+
+    cellDisplacementFinal
+    {
+        solver PCG;
+        preconditioner  DIC;
+
+        minIter         0;
+        maxIter         500;
+        tolerance       1e-12;
+    };
+
+    "(k|omega|nuTilda)"
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-10;
+        relTol          0;
+        minIter         1;
+    }
+
+    "(k|omega|nuTilda)Final"
+    {
+        $nuTilda;
+        tolerance       1e-10;
+        reltol          0;
+        minIter         1;
+    }
+
+    yPsi
+    {
+        solver          GAMG;
+        smoother        GaussSeidel;
+        cacheAgglomeration true;
+        nCellsInCoarsestLevel 10;
+        agglomerator    faceAreaPair;
+        mergeLevels     1;
+        tolerance       1e-5;
+        relTol          0;
+    }
+
+    yPsiFinal
+    {
+        $yPsi;
+        tolerance       1e-5;
+        reltol          0;
+    }
+}
+
+Jacobian LaxFriedrich;
+
+flowSolver
+{
+    solver            GMRES;
+    GMRES
+    {
+        inviscidJacobian  LaxFriedrich;
+        preconditioner    LUSGS;
+    viscousJacobian   laplacian;
+        maxIter           20;
+        nKrylov           8;
+        solverTolRel      1e-1 (1e-1 1e-1 1e-1) 1e-1;
+        solverTol         5e-5 (5e-5 5e-5 5e-5) 5e-5;
+    }
+}
+
+pseudoTime
+{
+    pseudoTol         5e-5 (5e-5 5e-5 5e-5) 5e-5;
+    pseudoTolRel      1e-1 (1e-1 1e-1 1e-1) 1e-1;
+
+    pseudoCoNum       1.0;
+    pseudoCoNumMax    100.0;
+    pseudoCoNumMin    0.1;
+
+    pseudoCoNumMaxIncreaseFactor  1.01;
+
+    localTimestepping             true;
+    localTimesteppingBounding     true;
+    localTimesteppingLowerBound   0.95;
+
+    moveMeshOuterCorrectors 1;
+}
+
+solverControls
+{
+    computeDeltaT       true;
+    maxCo               $MaxCourantNo;
+
+    rebalance           false;
+    maxLoadImbalance    $MaxLoadImbalance;
+}
+
+// ************************************************************************* //

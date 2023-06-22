@@ -1,0 +1,19 @@
+// Maximum Courant number 
+MaxCourantNo     500000;
+MaxLoadImbalance 0.1;
+
+// Number of processors
+nProcess    4;
+nX          2;
+nY          2;    
+
+// Dynamic refinement
+Ma      6.47;
+Gamma   1.4;
+lambda  6e-4;
+
+// Simulation time control
+writeTime       0.02;
+endTime         2;
+deltaT          0.001;
+

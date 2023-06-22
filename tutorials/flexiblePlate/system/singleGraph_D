@@ -1,0 +1,30 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+singleGraph
+{
+    start   (0 0 0.025);
+    end     (0 1 0.025);
+    fields  (grad(T) D);
+
+    // #includeEtc "caseDicts/postProcessing/graphs/sampleDict.cfg"
+
+    interpolationScheme cellPoint;
+    setFormat   raw;
+    setConfig
+    {
+        type    midPoint;  //uniform, midPoint, midPointAndFace
+        axis    y;  // x, y, z, xyz, distance
+        //nPoints 100;
+    }
+
+    // Must be last entry
+    #includeEtc "caseDicts/postProcessing/graphs/graph.cfg"
+}
+
+// ************************************************************************* //

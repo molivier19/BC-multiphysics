@@ -1,0 +1,17 @@
+multiFieldIterator/multiFieldIterator.C
+
+pointSelection/pointSelection/pointSelection.C
+pointSelection/pointSelection/newPointSelection.C
+pointSelection/pointSelectionNearestPoint/pointSelectionNearestPoint.C
+pointSelection/pointSelectionNearestGroup/pointSelectionNearestGroup.C
+pointSelection/pointSelectionAll/pointSelectionAll.C
+pointSelection/pointSelectionSharingZ/pointSelectionSharingZ.C
+
+radialExtrapolation/radialExtrapolation/radialExtrapolation.C
+radialExtrapolation/radialExtrapolation/newRadialExtrapolation.C
+radialExtrapolation/radialExtrapolationNNI/radialExtrapolationNNI.C
+radialExtrapolation/radialExtrapolationRBF/radialExtrapolationRBF.C
+radialExtrapolation/radialExtrapolationIDW/radialExtrapolationIDW.C
+radialExtrapolation/radialExtrapolationIDWXY/radialExtrapolationIDWXY.C
+
+LIB = $(FOAM_USER_LIBBIN)/libnewOpenFOAM

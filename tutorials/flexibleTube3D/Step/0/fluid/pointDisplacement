@@ -1,0 +1,52 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       pointVectorField;
+    location    "0/fluid";
+    object      pointDisplacement;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    INLET
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+    INTERFACE_FLUID
+    {
+        type            fsiInterfaceDisplacement;
+        solidRegion     solid;
+        solidPatch      INTERFACE_SOLID;
+        value           uniform ( 0 0 0 );
+        radialExtrapolation
+        {
+            method          "radialExtrapolationNNI";
+            pointSelectionDict
+            {
+            }
+        }
+    }
+    OUTLET
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+}
+
+
+// ************************************************************************* //

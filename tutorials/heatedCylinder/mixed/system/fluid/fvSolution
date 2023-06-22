@@ -1,0 +1,132 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/fluid";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "../../system/include/CaseControl";
+
+solvers
+{
+    cellDisplacement
+    {
+        solver PCG;
+        preconditioner  DIC;
+
+        minIter         0;
+        maxIter         500;
+        tolerance       1e-12;
+        relTol          0.001;
+    };
+
+    cellDisplacementFinal
+    {
+        solver PCG;
+        preconditioner  DIC;
+
+        minIter         0;
+        maxIter         500;
+        tolerance       1e-12;
+        //relTol          0.001;
+    };
+
+    "(k|omega|nuTilda)"
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-10;
+        relTol          0;
+        minIter         1;
+    }
+
+    "(k|omega|nuTilda)Final"
+    {
+        $nuTilda;
+        tolerance       1e-10;
+        reltol          0;
+        minIter         1;
+    }
+
+    yPsi
+    {
+        solver          GAMG;
+        smoother        GaussSeidel;
+        cacheAgglomeration true;
+        nCellsInCoarsestLevel 10;
+        agglomerator    faceAreaPair;
+        mergeLevels     1;
+        tolerance       1e-5;
+        relTol          0;
+    }
+}
+
+relaxationFactors
+{
+    equations
+    {
+        nuTilda         0.5;
+        k               0.5;
+        omega           0.5;
+    }
+}
+
+Jacobian LaxFriedrichs;
+
+flowSolver
+{
+    solver            GMRES;
+    GMRES
+    {
+        inviscidJacobian  LaxFriedrichs;
+        viscousJacobian   laplacian;
+        preconditioner    LUSGS;
+
+        maxIter           20;
+        nKrylov           8;
+        solverTolRel      1e-1 (1e-1 1e-1 1e-1) 1e-1;
+        solverTol         5e-5 (5e-5 5e-5 5e-5) 5e-5;
+    }
+}
+
+pseudoTime
+{
+    // nPseudoCorr        200;
+    // nPseudoCorrMin     10;
+
+    pseudoTolRel       5e-3 (5e-3 5e-3 5e-3) 5e-3;
+    pseudoTol          5e-3 (5e-3 5e-3 5e-3) 5e-3;
+
+    pseudoCoNum        0.05;
+    pseudoCoNumMax     5.0;
+    pseudoCoNumMin     0.05;
+
+    pseudoCoNumMaxIncreaseFactor  1.2;
+
+    localTimestepping             true;
+    localTimesteppingBounding     true;
+    localTimesteppingLowerBound   0.95;
+
+    moveMeshOuterCorrectors 1;
+}
+
+solverControls
+{
+    computeDeltaT       false;
+    maxCo               $MaxCourantNo;
+
+    rebalance            false;
+    maxLoadImbalance    $MaxLoadImbalance;
+}
+
+// ************************************************************************* //

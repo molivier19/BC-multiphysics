@@ -1,0 +1,3 @@
+wallHeatFluxKappa/wallHeatFluxKappa.C
+
+LIB = $(FOAM_USER_LIBBIN)/libnewFunctionObjects

@@ -1,0 +1,29 @@
+#!/bin/bash -f
+#------------------------------------------------------------------------------
+# Script
+#     bashrc
+#
+# Description
+#     Startup File for BC-multiphysics.
+#     Sourced from ~/.bashrc
+#
+# Author 
+#
+#------------------------------------------------------------------------------
+
+# Environment variables
+
+#export WM_BCMP_VERSION=
+
+etcDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+export WM_BCMP_DIR=`realpath $etcDir/..`
+export WM_BCMP=`basename $WM_BCMP_DIR`
+export WM_BCMP_SRC=$WM_BCMP_DIR/src
+export WM_HISA_DIR=$HOME/OpenFOAM/hisa
+
+export PATH=${WM_BCMP_DIR}/bin:$PATH
+
+alias bcmp='cd $WM_BCMP_DIR'
+
+# -----------------------------------------------------------------------------
